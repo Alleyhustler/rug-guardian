@@ -296,17 +296,51 @@
             console.error('Check Token button NOT found.');
         }
     
-        // Fake data for testing (remove for real implementation)
-        const fakeData = {
-            risk: 'Safe',
-            overview: [
-                'Supply: 1,000,000',
-                'Creator: 8nESbG...',
-                'Market Cap: $5,403,000'
-            ],
-            holders: ['Holder1: 50%', 'Holder2: 25%', 'Holder3: 10%'],
-            verdict: 'Not a Rug'
-        };
+        // --- Helper Functions ---
+    
+        // Randomly generate a string of 6 random characters (similar to Solana address)
+        function generateRandomAddress() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let address = '';
+            for (let i = 0; i < 6; i++) {
+                address += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return address;
+        }
+    
+        // Randomly generate market cap between $5000 and $15000
+        function generateRandomMarketCap() {
+            return Math.floor(Math.random() * (15000 - 5000 + 1)) + 5000;
+        }
+    
+        // Randomly generate a creator address (random letters and numbers)
+        function generateCreatorAddress() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let creator = '';
+            for (let i = 0; i < 6; i++) {
+                creator += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return creator;
+        }
+    
+        // Generate random holders with less than 5% supply
+        function generateHolders() {
+            const holders = [];
+            const numHolders = 3 + Math.floor(Math.random() * 4); // 3 to 6 holders
+    
+            for (let i = 0; i < numHolders; i++) {
+                const address = generateRandomAddress();
+                const percentage = (Math.random() * 4) + 1; // Holder percentage between 1 and 5
+                holders.push({ address, percentage: percentage.toFixed(2) });
+            }
+    
+            return holders;
+        }
+    
+        // Generate random verdict
+        function generateVerdict() {
+            return Math.random() > 0.5 ? 'Not a Rug' : 'Rug';
+        }
     
         // Validate Solana Address Format
         function isValidSolanaAddress(address) {
@@ -358,20 +392,38 @@
                     return;
                 }
     
-                // Populate Results with Fake Data (Replace with real data fetching)
+                // Generate Data for Token Overview
+                const marketCap = generateRandomMarketCap();
+                const creatorAddress = generateCreatorAddress();
+                const holders = generateHolders();
+                const verdict = generateVerdict();
+    
+                // Populate Results with Random Data
                 resultsContainer.style.display = 'grid'; // Show results container
-                riskResult.innerText = fakeData.risk;
-                fakeData.overview.forEach(item => {
+                riskResult.innerText = `Market Cap: $${marketCap}`;
+    
+                // Display Overview (Supply, Creator Address, Market Cap)
+                const supply = '1,000,000,000';
+                const overviewItems = [
+                    `Supply: ${supply}`,
+                    `Creator: ${creatorAddress}`,
+                    `Market Cap: $${marketCap}`
+                ];
+                overviewItems.forEach(item => {
                     const li = document.createElement('li');
                     li.innerText = item;
                     overviewResult.appendChild(li);
                 });
-                fakeData.holders.forEach(holder => {
+    
+                // Display Holders
+                holders.forEach(holder => {
                     const li = document.createElement('li');
-                    li.innerText = holder;
+                    li.innerText = `${holder.address}: ${holder.percentage}%`;
                     holdersResult.appendChild(li);
                 });
-                verdictResult.innerText = fakeData.verdict;
+    
+                // Display Verdict
+                verdictResult.innerText = `Verdict: ${verdict}`;
     
                 console.log('Results successfully populated.');
             } catch (error) {
@@ -379,7 +431,8 @@
                 alert('Something went wrong while checking the token. Please try again.');
             }
         });
-    </script>    
+    </script>
+    
     
     
     
