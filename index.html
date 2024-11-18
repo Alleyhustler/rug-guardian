@@ -254,7 +254,7 @@
 
     <script>
         // --- WALLET CONNECTION ---
-        document.getElementById('connect-wallet').addEventListener('click', async () => {
+        document.getElementById('connect-wallet')?.addEventListener('click', async () => {
             try {
                 const isPhantomInstalled = window.solana && window.solana.isPhantom;
                 if (!isPhantomInstalled) {
@@ -279,7 +279,8 @@
         });
     
         // --- TOKEN CHECKER ---
-        // --- TOKEN CHECKER ---
+        console.log('Script loaded successfully.');
+    
         // Select elements
         const checkTokenButton = document.getElementById('check-token');
         const tokenInput = document.getElementById('token-input');
@@ -288,7 +289,13 @@
         const overviewResult = document.getElementById('overview-result');
         const holdersResult = document.getElementById('holders-result');
         const verdictResult = document.getElementById('verdict-result');
-
+    
+        if (checkTokenButton) {
+            console.log('Check Token button found.');
+        } else {
+            console.error('Check Token button NOT found.');
+        }
+    
         // Fake data for testing (remove for real implementation)
         const fakeData = {
             risk: 'Safe',
@@ -300,57 +307,57 @@
             holders: ['Holder1: 50%', 'Holder2: 25%', 'Holder3: 10%'],
             verdict: 'Not a Rug'
         };
-
+    
         // Validate Solana Address Format
         function isValidSolanaAddress(address) {
-            const base58Regex = /^[A-HJ-NP-Za-km-z1-9]{32,}$/; // Removed the upper length limit
+            const base58Regex = /^[A-HJ-NP-Za-km-z1-9]{32,}$/;
             return base58Regex.test(address);
         }
-
+    
         // Check if Address is a Memecoin
         async function isMemecoin(address) {
             if (!isValidSolanaAddress(address)) {
                 console.log('Invalid Solana address format.');
                 return false; // Invalid address
             }
-
+    
             if (!address.endsWith('pump')) {
                 console.log('Address does not meet memecoin criteria.');
                 return false; // Not a memecoin
             }
-
+    
             return true; // Valid memecoin
         }
-
+    
         // Check Token Event Listener
-        checkTokenButton.addEventListener('click', async () => {
-            console.log('Check Token button clicked');
+        checkTokenButton?.addEventListener('click', async () => {
+            console.log('Check Token button clicked.');
             const tokenAddress = tokenInput.value.trim();
-
+    
             // Clear Results
-            resultsContainer.style.display = 'none'; // Hide initially
+            resultsContainer.style.display = 'none'; // Hide results initially
             riskResult.innerText = '';
             overviewResult.innerHTML = '';
             holdersResult.innerHTML = '';
             verdictResult.innerText = '';
-
+    
             if (!tokenAddress) {
                 alert('Please enter a token address!');
                 return;
             }
-
+    
             console.log(`Token Address Entered: ${tokenAddress}`);
-
+    
             try {
                 // Validate Memecoin Address
                 const isValid = await isMemecoin(tokenAddress);
                 console.log(`Is Memecoin: ${isValid}`);
-
+    
                 if (!isValid) {
                     alert('This is not a valid Solana memecoin address!');
                     return;
                 }
-
+    
                 // Populate Results with Fake Data (Replace with real data fetching)
                 resultsContainer.style.display = 'grid'; // Show results container
                 riskResult.innerText = fakeData.risk;
@@ -365,18 +372,14 @@
                     holdersResult.appendChild(li);
                 });
                 verdictResult.innerText = fakeData.verdict;
-
+    
                 console.log('Results successfully populated.');
             } catch (error) {
                 console.error('An error occurred:', error);
                 alert('Something went wrong while checking the token. Please try again.');
             }
         });
-
-
-
-
-    </script>
+    </script>    
     
     
     
