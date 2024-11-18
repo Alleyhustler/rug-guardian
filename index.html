@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rug Guardian - Pixel Edition</title>
+    <title>Rug Guardian </title>
     <style>
         /* General Reset */
         body, html {
             margin: 0;
             padding: 0;
             font-family: 'Press Start 2P', sans-serif;
-            background: #1e1e1e url('https://via.placeholder.com/16') repeat;
+            background: #1e1e1e url('aad.png') no-repeat center center fixed;
+            background-size: cover;
             color: #ffffff;
+            height: 100%; /* Ensure full height */
         }
+
 
     /* Header Styling */
     header {
@@ -20,7 +23,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 20px;
-        background: #2b2b2b;
+        background: #2b2b2bb3;
         border-bottom: 4px solid #00ffff;
     }
 
@@ -31,8 +34,8 @@
     }
 
     header .logo img {
-        width: 32px;
-        height: 32px;
+        width: 102px;
+        height: 72px;
         margin-right: 10px;
     }
 
@@ -124,89 +127,126 @@
     /* Results Section */
     .results {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 20px;
         margin: 40px auto;
+        padding: 10px;
         width: 90%;
         max-width: 1200px;
     }
 
     .result-item {
-        background: #1e1e1e;
+        background: #2b2b2b;
         border: 4px solid #00ffff;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 20px;
-        color: #fff;
-        font-family: 'Press Start 2P', sans-serif;
-        text-align: left;
-        position: relative;
+        color: #ffffff;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .result-item:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
     }
 
     .result-item h3 {
+        font-size: 16px;
         color: #00ffff;
         margin-bottom: 10px;
+        text-transform: uppercase;
+        text-shadow: 0 0 5px #00ffff;
     }
 
     .result-item p, .result-item ul {
-        margin: 0;
+        margin: 10px 0;
         font-size: 14px;
+        line-height: 1.5;
     }
+
+    .result-item ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .result-item ul li {
+        margin: 5px 0;
+        text-align: left;
+    }
+
+    .result-item ul li::before {
+        content: "• ";
+        color: #00ffff;
+    }
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="https://via.placeholder.com/32" alt="Logo">
+            <img src="Progetto senza titolo (60).png" alt="Logo">
             RugGuardian
         </div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Tokens</a>
-            <a href="#">Verify</a>
-            <a href="#">Integrations</a>
-        </nav>
-        <button class="button" id="connect-wallet">CONNECT WALLET</button>
+            <a href="#" title="Coming Soon">Home</a>
+            <a href="#" title="Coming Soon">Tokens</a>
+            <a href="#" title="Coming Soon">Verify</a>
+            <a href="#" title="Coming Soon">Integrations</a>
+        </nav>              
     </header>
 
     <div class="container">
         <h1>Rug Guardian</h1>
-        <p>Your pixelated tool for safeguarding Solana token markets</p>
+        <p>On chain for safeguarding Solana Shitcoins</p>
+    
+        <!-- Token Checker Section -->
         <div class="token-checker">
             <h2>Token Checker</h2>
             <input type="text" id="token-input" placeholder="Enter Solana Token Address">
-            <button class="button" id="check-token">CHECK TOKEN</button>
+            <button class="button" id="check-token">Check Token</button>
         </div>
-        
+    
+<!-- Results Section -->
         <div class="results" id="results-container" style="display: none;">
+            <!-- Clean Overview Section -->
+            <div class="result-item" id="overview">
+                <h3>Token Overview</h3>
+                <ul id="overview-result"></ul>
+            </div>
+
+            <!-- Risk Analysis Section -->
             <div class="result-item" id="risk-analysis">
                 <h3>Risk Analysis</h3>
                 <p id="risk-result"></p>
             </div>
-            <div class="result-item" id="overview">
-                <h3>Overview</h3>
-                <ul id="overview-result"></ul>
-            </div>
+
+            <!-- Top Holders Section -->
             <div class="result-item" id="top-holders">
                 <h3>Top Holders</h3>
                 <ul id="holders-result"></ul>
             </div>
+
+            <!-- Guardian Verdict -->
             <div class="result-item" id="guardian-verdict">
                 <h3>Guardian's Verdict</h3>
                 <p id="verdict-result"></p>
             </div>
-        </div>        
+        </div>
+
     </div>
+    
 
     <footer>
-        <p>&copy; 2024 Rug Guardian. Pixel Style for Web3.</p>
+        <p>&copy; 2024 Rug Guardian. $GUARD for Web3.</p>
+        <p> CA HERE</p>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" title="Follow us on Twitter">Twitter</a>
+        <a href="https://t.me" target="_blank" rel="noopener noreferrer" title="Join our Telegram">Telegram</a>        
     </footer>
 
     <script>
-        // RPC Endpoint
-        const SOLANA_RPC_URL = "https://api.mainnet-beta.solana.com";
-    
-        // Wallet Connection
+        // --- WALLET CONNECTION ---
         document.getElementById('connect-wallet').addEventListener('click', async () => {
             try {
                 const isPhantomInstalled = window.solana && window.solana.isPhantom;
@@ -215,8 +255,15 @@
                     return;
                 }
     
+                // Check if already connected
                 const provider = window.solana;
-                const wallet = await provider.connect(); // Force connection
+                if (provider.isConnected) {
+                    alert('Wallet already connected!');
+                    return;
+                }
+    
+                // Connect wallet
+                const wallet = await provider.connect();
                 alert(`Wallet connected: ${wallet.publicKey.toString()}`);
             } catch (err) {
                 console.error('Error connecting to wallet:', err.message);
@@ -224,38 +271,7 @@
             }
         });
     
-        // Validate Token Mint
-        async function isTokenMint(address) {
-            try {
-                const response = await fetch(SOLANA_RPC_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        jsonrpc: "2.0",
-                        id: 1,
-                        method: "getAccountInfo",
-                        params: [address, { encoding: "jsonParsed" }]
-                    })
-                });
-    
-                const data = await response.json();
-    
-                // Validate it's a token mint account
-                if (
-                    data.result &&
-                    data.result.value &&
-                    data.result.value.owner === "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" && // SPL Token Program ID
-                    data.result.value.data.parsed.type === "mint" // Token mint type
-                ) {
-                    return true;
-                }
-            } catch (err) {
-                console.error("Error validating token mint:", err.message);
-            }
-            return false;
-        }
-    
-        // Token Checker Elements
+        // --- TOKEN CHECKER ---
         const checkTokenButton = document.getElementById('check-token');
         const tokenInput = document.getElementById('token-input');
         const resultsContainer = document.getElementById('results-container');
@@ -264,33 +280,61 @@
         const holdersResult = document.getElementById('holders-result');
         const verdictResult = document.getElementById('verdict-result');
     
-        // Check Token Event
+        const fakeData = {
+            risk: 'Safe',
+            overview: [
+                'Supply: 1,000,000',
+                'Creator: 0x123456789...',
+                'Market Cap: $5,000,000'
+            ],
+            holders: ['Holder1: 50%', 'Holder2: 25%', 'Holder3: 10%'],
+            verdict: 'Not a Rug'
+        };
+    
+        // Validate Token Mint with Custom Logic
+        async function isMemecoin(address) {
+            // First validate the address format
+            if (!isValidSolanaAddress(address)) {
+                return false; // Invalid Solana address
+            }
+
+            // Then check custom memecoin logic
+            if (!address.endsWith("pump")) {
+                return false; // Not a memecoin
+            }
+
+            return true;
+        }
+
+    
+        // Validate Solana Address Format
+        function isValidSolanaAddress(address) {
+            // Adjust max length to allow for custom extensions like "pump"
+            const base58Regex = /^[A-HJ-NP-Za-km-z1-9]{32,}$/; // Removed the upper length limit
+            return base58Regex.test(address);
+        }
+
+    
+        // Check Token Event Listener
         checkTokenButton.addEventListener('click', async () => {
-            // Get Input Value
             const tokenAddress = tokenInput.value.trim();
     
-            // Clear Results and Hide Container
+            // Clear Results
             resultsContainer.style.display = 'none';
             riskResult.innerText = '';
             overviewResult.innerHTML = '';
             holdersResult.innerHTML = '';
             verdictResult.innerText = '';
     
-            // Validate Input
-            if (!isValidSolanaAddress(tokenAddress)) {
-                alert('Invalid Solana address!');
+            // Validate Memecoin Address
+            const isValid = await isMemecoin(tokenAddress);
+            if (!isValid) {
+                alert('This is not a valid Solana memecoin address!');
                 return;
             }
     
-            // Validate Token Mint
-            const isMint = await isTokenMint(tokenAddress);
-            if (!isMint) {
-                alert('This is not a valid Solana memecoin token address!');
-                return;
-            }
-    
-            // Display Results
-            resultsContainer.style.display = 'grid'; // Show container
+            // Simulated Results for Memecoin
+            resultsContainer.style.display = 'grid'; // Show results container
             riskResult.innerText = fakeData.risk;
             fakeData.overview.forEach(item => {
                 const li = document.createElement('li');
@@ -304,12 +348,6 @@
             });
             verdictResult.innerText = fakeData.verdict;
         });
-    
-        // Solana Address Validator
-        function isValidSolanaAddress(address) {
-            const base58Regex = /^[A-HJ-NP-Za-km-z1-9]{32,44}$/;
-            return base58Regex.test(address);
-        }
     </script>
     
     
